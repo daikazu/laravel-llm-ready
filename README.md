@@ -29,8 +29,8 @@ Large Language Models (LLMs) like ChatGPT and Claude work much better with clean
 
 ## Requirements
 
-- PHP 8.2+
-- Laravel 11.x or 12.x
+- PHP 8.4+
+- Laravel 12.x
 
 ## Installation
 
