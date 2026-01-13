@@ -30,3 +30,9 @@ phpstan.neon
 testbench.yaml
 /docs
 /coverage
+
+# AI Tools
+CLAUDE.md
+.mcp.json
+.claude
+.ai
