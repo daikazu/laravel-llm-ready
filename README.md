@@ -1,10 +1,13 @@
-# Serve LLM-optimized markdown versions of your Laravel pages by appending .md to any URL.
-
+<picture>
+   <source media="(prefers-color-scheme: dark)" srcset="art/header-dark.png">
+   <img alt="Logo for LLM Ready" src="art/header-light.png">
+</picture>
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/daikazu/laravel-llm-ready.svg?style=flat-square)](https://packagist.org/packages/daikazu/laravel-llm-ready)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/daikazu/laravel-llm-ready/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/daikazu/laravel-llm-ready/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/daikazu/laravel-llm-ready/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/daikazu/laravel-llm-ready/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/daikazu/laravel-llm-ready.svg?style=flat-square)](https://packagist.org/packages/daikazu/laravel-llm-ready)
 
+# Serve LLM-optimized markdown versions of your Laravel pages by appending .md to any URL.
 
 ## Purpose
 
