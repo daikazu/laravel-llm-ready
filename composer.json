@@ -21,9 +21,9 @@
         "illuminate/contracts": "^12.0",
         "illuminate/support": "^12.0",
         "league/html-to-markdown": "^5.1",
-        "symfony/css-selector": "^7.0",
-        "symfony/dom-crawler": "^7.0",
-        "symfony/yaml": "^7.0"
+        "symfony/css-selector": "^7.0|^8.0",
+        "symfony/dom-crawler": "^7.0|^8.0.0",
+        "symfony/yaml": "^7.0|^8.0.0"
     },
     "require-dev": {
         "larastan/larastan": "^3.0",
