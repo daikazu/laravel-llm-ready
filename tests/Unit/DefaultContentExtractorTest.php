@@ -10,7 +10,7 @@ it('extracts content using css selector', function () {
     $html = '<html><body><nav>Navigation</nav><main><h1>Title</h1><p>Content</p></main><footer>Footer</footer></body></html>';
 
     $dom = new DOMDocument;
-    $dom->loadHTML($html);
+    $dom->loadHTML($html, LIBXML_NOERROR);
 
     $result = $extractor->extract($dom, ['main'], []);
 
@@ -26,7 +26,7 @@ it('removes ignored elements', function () {
     $html = '<html><body><main><h1>Title</h1><nav>Nav in main</nav><p>Content</p></main></body></html>';
 
     $dom = new DOMDocument;
-    $dom->loadHTML($html);
+    $dom->loadHTML($html, LIBXML_NOERROR);
 
     $result = $extractor->extract($dom, ['main'], ['nav']);
 
@@ -41,7 +41,7 @@ it('falls back to body if no selector matches', function () {
     $html = '<html><body><div><h1>Title</h1><p>Content</p></div></body></html>';
 
     $dom = new DOMDocument;
-    $dom->loadHTML($html);
+    $dom->loadHTML($html, LIBXML_NOERROR);
 
     $result = $extractor->extract($dom, ['article'], []);
 
@@ -55,7 +55,7 @@ it('tries selectors in order', function () {
     $html = '<html><body><article><p>Article content</p></article><main><p>Main content</p></main></body></html>';
 
     $dom = new DOMDocument;
-    $dom->loadHTML($html);
+    $dom->loadHTML($html, LIBXML_NOERROR);
 
     // article should be found first
     $result = $extractor->extract($dom, ['article', 'main'], []);
@@ -70,7 +70,7 @@ it('handles class selectors', function () {
     $html = '<html><body><div class="content"><h1>Title</h1></div><div class="sidebar">Sidebar</div></body></html>';
 
     $dom = new DOMDocument;
-    $dom->loadHTML($html);
+    $dom->loadHTML($html, LIBXML_NOERROR);
 
     $result = $extractor->extract($dom, ['.content'], ['.sidebar']);
 
