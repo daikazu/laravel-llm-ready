@@ -49,5 +49,13 @@ class TestCase extends Orchestra
         Route::get('/admin/dashboard', function () {
             return '<html><head><title>Admin Dashboard</title></head><body><main><h1>Dashboard</h1></main></body></html>';
         });
+
+        Route::get('/blog/{slug}', function (string $slug) {
+            $title = ucwords(str_replace('-', ' ', $slug));
+
+            return '<html><head><title>' . $title . '</title></head>'
+                . '<body><main><h1>' . $title . '</h1>'
+                . '<p>Blog post content.</p></main></body></html>';
+        });
     }
 }
