@@ -8,8 +8,8 @@ use Daikazu\LaravelLlmReady\Commands\ClearLlmCacheCommand;
 use Daikazu\LaravelLlmReady\Contracts\ContentExtractorInterface;
 use Daikazu\LaravelLlmReady\Extractors\DefaultContentExtractor;
 use Daikazu\LaravelLlmReady\Http\Controllers\LlmsTxtController;
-use Daikazu\LaravelLlmReady\Http\Controllers\MarkdownPageController;
 use Daikazu\LaravelLlmReady\Http\Middleware\InterceptMarkdownRequests;
+use Daikazu\LaravelLlmReady\Http\Middleware\RewriteMarkdownExtension;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Route;
 use InvalidArgumentException;
@@ -53,9 +53,13 @@ class LaravelLlmReadyServiceProvider extends PackageServiceProvider
             return;
         }
 
-        // Register middleware for ?format=md query parameter support
         /** @var Kernel $kernel */
         $kernel = $this->app->make(Kernel::class);
+
+        // Register global middleware to rewrite .md URLs before routing
+        $kernel->pushMiddleware(RewriteMarkdownExtension::class);
+
+        // Register web middleware for markdown response conversion
         $kernel->appendMiddlewareToGroup('web', InterceptMarkdownRequests::class);
 
         // Register llms.txt route
@@ -64,18 +68,5 @@ class LaravelLlmReadyServiceProvider extends PackageServiceProvider
                 ->get('/llms.txt', LlmsTxtController::class)
                 ->name('llm-ready.llms-txt');
         }
-
-        // Register catch-all routes for .md URLs
-        // Using booted() callback ensures these are registered after app routes
-        $this->app->booted(function (): void {
-            Route::middleware('web')
-                ->get('/index.md', MarkdownPageController::class)
-                ->name('llm-ready.index');
-
-            Route::middleware('web')
-                ->get('/{path}.md', MarkdownPageController::class)
-                ->where('path', '.*')
-                ->name('llm-ready.page');
-        });
     }
 }

@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Middleware to handle ?format=md query parameter.
- * The .md extension is handled by routes instead.
+ * Middleware to convert responses to markdown.
+ * Triggered by ?format=md query parameter or by the
+ * RewriteMarkdownExtension middleware (for .md URLs).
  */
 final readonly class InterceptMarkdownRequests
 {
@@ -32,9 +33,11 @@ final readonly class InterceptMarkdownRequests
             return $next($request);
         }
 
-        // Only handle ?format=md query parameter
-        // The .md extension is handled by routes
-        if ($request->query('format') !== 'md') {
+        // Handle ?format=md query parameter or .md extension (via RewriteMarkdownExtension)
+        $isMarkdownRequest = $request->query('format') === 'md'
+            || $request->attributes->get('llm-ready.markdown', false);
+
+        if (! $isMarkdownRequest) {
             return $next($request);
         }
 

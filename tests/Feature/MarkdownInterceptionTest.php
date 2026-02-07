@@ -58,3 +58,27 @@ it('excludes admin routes from .md conversion', function () {
     // Should return 404 because it's excluded
     $response->assertStatus(404);
 });
+
+it('handles dynamic route parameters with .md extension', function () {
+    $response = $this->get('/blog/my-post.md');
+
+    $response->assertStatus(200);
+    $response->assertHeader('Content-Type', 'text/markdown; charset=UTF-8');
+    $response->assertHeader('X-LLM-Ready', 'true');
+
+    $content = $response->getContent();
+
+    expect($content)->toContain('# My Post');
+    expect($content)->toContain('Blog post content.');
+});
+
+it('does not affect dynamic route HTML responses', function () {
+    $response = $this->get('/blog/my-post');
+
+    $response->assertStatus(200);
+
+    $content = $response->getContent();
+
+    expect($content)->toContain('<html>');
+    expect($content)->toContain('<h1>My Post</h1>');
+});
