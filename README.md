@@ -23,6 +23,7 @@ Large Language Models (LLMs) like ChatGPT and Claude work much better with clean
 - **YAML Frontmatter**: Includes title, description, URL, and timestamps
 - **Caching**: TTL-based caching with artisan command for manual invalidation
 - **llms.txt Endpoint**: Spec-compliant sitemap at `/llms.txt` ([llmstxt.org](https://llmstxt.org))
+- **Markdown Discovery**: Automatic `Link` header, `@llmReady` Blade directive, and `llmReadyUrl()` helper
 - **Route Exclusions**: Pattern-based exclusions for admin, API, and other routes
 - **Redirect Handling**: Automatically follows redirects (e.g., `/blog` -> `/blog/`)
 - **Extensible**: Swap the content extractor with your own implementation
@@ -129,6 +130,46 @@ Append `.md` to any URL or add `?format=md` to get the markdown version.
 - [Blog](https://yoursite.com/blog)
 ```
 
+### Markdown Discovery
+
+LLMs and crawlers need a way to discover that a markdown version of a page exists. This package provides three complementary mechanisms:
+
+#### Automatic Link Header
+
+Every HTML response automatically includes a `Link` header pointing to the markdown version:
+
+```
+Link: <https://yoursite.com/about.md>; rel="alternate"; type="text/markdown"
+```
+
+This is enabled by default. Disable it via config or environment variable:
+
+```env
+LLM_READY_LINK_HEADER=false
+```
+
+#### Blade Directive
+
+Add a `<link>` tag to your templates so crawlers can discover the markdown version via HTML:
+
+```blade
+<head>
+    @llmReady
+    {{-- Outputs: <link rel="alternate" type="text/markdown" href="https://yoursite.com/about.md"> --}}
+</head>
+```
+
+The directive is opt-in — it only outputs when you use it, and returns an empty string for excluded routes or when the package is disabled.
+
+#### Helper Function
+
+Use `llmReadyUrl()` in programmatic contexts like SEO middleware (e.g., `romanzipp/laravel-seo`):
+
+```php
+// Returns "https://yoursite.com/about.md" or null if excluded/disabled
+$markdownUrl = llmReadyUrl();
+```
+
 ### Clear Cache
 
 ```bash
@@ -191,6 +232,11 @@ return [
         '/admin/*',    // Matches /admin/users, /admin/settings/email, etc.
         '/api/*',      // Matches /api/v1/users, /api/webhooks/stripe, etc.
         '/livewire/*',
+    ],
+
+    // Markdown discovery settings
+    'discovery' => [
+        'link_header' => env('LLM_READY_LINK_HEADER', true),
     ],
 
     // llms.txt configuration (follows llmstxt.org spec)
@@ -317,6 +363,7 @@ LLM_READY_CACHE_ENABLED=true
 LLM_READY_CACHE_TTL=1440
 LLM_READY_LLMS_TXT_ENABLED=true
 LLM_READY_LLMS_TXT_CACHE_TTL=60
+LLM_READY_LINK_HEADER=true
 LLM_READY_LLMS_TXT_TITLE="My Site"
 LLM_READY_LLMS_TXT_SUMMARY="A brief description of my site."
 ```
