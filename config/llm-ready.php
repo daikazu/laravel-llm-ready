@@ -159,6 +159,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Discovery Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configure how LLMs and crawlers discover markdown versions of pages.
+    | The Link header is automatically added to HTML responses.
+    | The @llmReady Blade directive and llmReadyUrl() helper are opt-in.
+    |
+    */
+
+    'discovery' => [
+        'link_header' => env('LLM_READY_LINK_HEADER', true),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | llms.txt Configuration
     |--------------------------------------------------------------------------
     |

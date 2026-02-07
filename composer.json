@@ -41,7 +41,10 @@
     "autoload": {
         "psr-4": {
             "Daikazu\\LaravelLlmReady\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

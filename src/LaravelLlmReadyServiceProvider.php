@@ -8,9 +8,11 @@ use Daikazu\LaravelLlmReady\Commands\ClearLlmCacheCommand;
 use Daikazu\LaravelLlmReady\Contracts\ContentExtractorInterface;
 use Daikazu\LaravelLlmReady\Extractors\DefaultContentExtractor;
 use Daikazu\LaravelLlmReady\Http\Controllers\LlmsTxtController;
+use Daikazu\LaravelLlmReady\Http\Middleware\AddLinkHeader;
 use Daikazu\LaravelLlmReady\Http\Middleware\InterceptMarkdownRequests;
 use Daikazu\LaravelLlmReady\Http\Middleware\RewriteMarkdownExtension;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use InvalidArgumentException;
 use Spatie\LaravelPackageTools\Package;
@@ -61,6 +63,14 @@ class LaravelLlmReadyServiceProvider extends PackageServiceProvider
 
         // Register web middleware for markdown response conversion
         $kernel->appendMiddlewareToGroup('web', InterceptMarkdownRequests::class);
+
+        // Register web middleware for Link header discovery
+        $kernel->appendMiddlewareToGroup('web', AddLinkHeader::class);
+
+        // Register @llmReady Blade directive
+        Blade::directive('llmReady', function () {
+            return "<?php echo app(\Daikazu\LaravelLlmReady\Services\DiscoveryService::class)->linkTag(); ?>";
+        });
 
         // Register llms.txt route
         if (config('llm-ready.llms_txt.enabled', true)) {
