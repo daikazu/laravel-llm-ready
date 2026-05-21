@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-llm-ready` will be documented in this file.
 
+## v1.3.0 - 2026-05-21
+
+### What's Changed
+
+- Add Laravel 13 support (#4) by @netstudio — widens `illuminate/contracts` and `illuminate/support` to `^12.0|^13.0`, and `orchestra/testbench` to `^10|^11`. All package tests pass under Laravel 13.9.
+
+### New Contributors
+
+- @netstudio made their first contribution in https://github.com/daikazu/laravel-llm-ready/pull/4
+
+**Full Changelog**: https://github.com/daikazu/laravel-llm-ready/compare/v1.2.0...v1.3.0
+
 ## v1.2.0 - 2026-02-07
 
 ### What's New
